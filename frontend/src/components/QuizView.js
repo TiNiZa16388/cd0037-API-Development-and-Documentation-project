@@ -104,7 +104,9 @@ class QuizView extends Component {
       <div className='quiz-play-holder'>
         <div className='choose-header'>Choose Category</div>
         <div className='category-holder'>
-          <div className='play-category' onClick={this.selectCategory}>
+          <div className='play-category' 
+            onClick={() => 
+              this.selectCategory({ type: 'All', id: 0 })}>
             ALL
           </div>
           {Object.keys(this.state.categories).map((id) => {

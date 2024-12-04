@@ -11,13 +11,29 @@ class QuestionView extends Component {
       questions: [],
       page: 1,
       totalQuestions: 0,
-      categories: {},
+      categories: [],
       currentCategory: null,
     };
   }
 
   componentDidMount() {
     this.getQuestions();
+    this.getCategories();
+  }
+
+  getCategories = () =>{
+    $.ajax({
+      url: `/categories`, //TODO: update request URL
+      type: 'GET',
+      success: (result) => {
+        this.setState({ categories: result.categories });
+        return;
+      },
+      error: (error) => {
+        alert('Unable to load categories. Please try your request again');
+        return;
+      },
+    });
   }
 
   getQuestions = () => {
@@ -163,7 +179,7 @@ class QuestionView extends Component {
               key={q.id}
               question={q.question}
               answer={q.answer}
-              category={this.state.categories[q.category]}
+              category={this.state.categories[q.category-1]}
               difficulty={q.difficulty}
               questionAction={this.questionAction(q.id)}
             />
