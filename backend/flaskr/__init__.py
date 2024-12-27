@@ -178,6 +178,15 @@ def create_app(test_config=None):
                 new_difficulty = body.get("difficulty", None)
                 new_category = body.get("category", None)
 
+                if new_answer is None:
+                    raise Exception("No valid input")
+                if new_question is None:
+                    raise Exception("No valid input")
+                if new_difficulty is None:
+                    raise Exception("No valid input")
+                if new_category is None:
+                    raise Exception("No valid input")
+                
                 question = Question(question=new_question, 
                                     answer=new_answer, 
                                     category=new_category,
