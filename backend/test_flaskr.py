@@ -32,7 +32,8 @@ class TriviaTestCase(unittest.TestCase):
         self.new_question = {"question": "Who was Napoleon Bonapart?", 
                             "answer": "French Emperor and General", 
                             "difficulty": 2,
-                            "category:": 4}
+                            "category": 4
+                            }
     
     def tearDown(self):
         """Executed after reach test"""
@@ -50,6 +51,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["categories"])
+
+    def test_get_categories_fail(self):
+        res = self.client().get("/categorie")
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
 
     def test_get_questions(self):
         res = self.client().get("/questions?page=1")
@@ -144,6 +152,13 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_quiz_fault(self):
         res = self.client().post('/quizzes',json={"previous_questions":[16],"quiz_category":{"type":"Not_existing", "id":100}})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'],False)
+
+    def test_quiz_fault(self):
+        res = self.client().post('/quizzes',json={"previous_questions":[16,17,18,19],"quiz_category":None})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
